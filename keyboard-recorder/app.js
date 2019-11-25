@@ -6,38 +6,20 @@ const input = readline.createInterface({
     output: process.stdout
 });
 
-// Create file for reading
+// Create file for writing
 var now = new Date();
-var isoString = now.toISOString();
+var fileName = "scans_" + now.getFullYear() + now.getMonth() + now.getDate() + "_" + now.getHours() + now.getMinutes() + now.getSeconds() + ".csv";
 
-var stream = fs.createWriteStream("Scans_" + isoString.replace(':', "-"), {
-    flags: 'a'
-});
 var start = Date.now();
 
 input.on('line', (input) => {
     var millis = Date.now() - start;
-    console.log('Received input: ' + input);
-    stream.write(input + ", " + millis + "\n");
-});
+    var line = input + ", " + millis + "\n";
 
-if (process.platform === "win32") {
-    var rl = require("readline").createInterface({
-        input: process.stdin,
-        output: process.stdout
+    fs.writeFile(fileName, line, { flag: 'a' }, (err) => {
+        // throws an error, you could also catch it here
+        if (err) {
+            console.log('Error: ' + err);
+        }
     });
-
-    rl.on("SIGINT", function () {
-        shutdown();
-    });
-}
-
-process.on("SIGINT", function () {
-    shutdown();
 });
-
-function shutdown() {
-    console.log('Application exiting...');
-    stream.close();
-    process.exit();
-}
