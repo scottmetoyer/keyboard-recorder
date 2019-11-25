@@ -27,6 +27,7 @@ for (i in scans) {
 console.log("Loaded " + events.length + " events. Playing...");
 var start = Date.now();
 
+// Play the sequence
 while (playing) {
     if (playIndex >= events.length) {
         playing = false;
@@ -34,6 +35,9 @@ while (playing) {
         var millis = Date.now() - start;
         if(millis >= events[playIndex].time) {
             console.log(events[playIndex].scan);
+
+            // TODO: Parse barcode and send MIDI CC
+
             playIndex++;
         }
     }
