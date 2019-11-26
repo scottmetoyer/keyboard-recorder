@@ -55,10 +55,10 @@ while (playing) {
             console.log(events[playIndex].scan);
 
             // TODO: Parse barcode and send MIDI CC
-            var byte1 = Math.round(scale(input.substr(7, 2), 0, 100, 0, 127));
-            var byte2 = Math.round(scale(input.substr(9, 2), 0, 100, 0, 127));
-            var byte3 = Math.round(scale(input.substr(11, 2), 0, 100, 0, 127));
-            var byte4 = Math.round(scale(input.substr(13, 2), 0, 100, 0, 127));
+            var byte1 = Math.round(scale(events[playIndex].scan.substr(7, 2), 0, 100, 0, 127));
+            var byte2 = Math.round(scale(events[playIndex].scan.substr(9, 2), 0, 100, 0, 127));
+            var byte3 = Math.round(scale(events[playIndex].scan.substr(11, 2), 0, 100, 0, 127));
+            var byte4 = Math.round(scale(events[playIndex].scan.substr(13, 2), 0, 100, 0, 127));
 
             output.sendMessage([176, 1, byte1]);
             output.sendMessage([176, 2, byte2]);
