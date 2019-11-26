@@ -1,6 +1,11 @@
 const fs = require('fs');
 const midi = require('midi');
 const output = new midi.Output();
+
+const scale = (num, in_min, in_max, out_min, out_max) => {
+    return (num - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+  }
+
 var portCount = output.getPortCount();
 
 var playIndex = 0;
@@ -70,7 +75,3 @@ console.log("File ended.");
 function showUsage() {
     console.log("Usage: node keyboard-player <input csv file>");
 }
-
-const scale = (num, in_min, in_max, out_min, out_max) => {
-    return (num - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
-  }
