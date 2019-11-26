@@ -36,7 +36,7 @@ for (var i = 0; i < portCount; i++) {
   console.log(i + ': ' + output.getPortName(i));
 }
 
-var deviceNumber = 2;
+var deviceNumber = 1;
 output.openPort(deviceNumber);
 console.log('Opened ' + output.getPortName(deviceNumber) +  '. Waiting for playback.');
 
@@ -70,3 +70,7 @@ console.log("File ended.");
 function showUsage() {
     console.log("Usage: node keyboard-player <input csv file>");
 }
+
+const scale = (num, in_min, in_max, out_min, out_max) => {
+    return (num - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+  }
