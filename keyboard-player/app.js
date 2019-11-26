@@ -1,4 +1,8 @@
 const fs = require('fs');
+const midi = require('midi');
+const output = new midi.Output();
+var portCount = output.getPortCount();
+
 var playIndex = 0;
 var playing = true;
 var events = [];
@@ -27,6 +31,15 @@ for (i in scans) {
 console.log("Loaded " + events.length + " events. Playing...");
 var start = Date.now();
 
+console.log("Available MIDI devices:");
+for (var i = 0; i < portCount; i++) {
+  console.log(i + ': ' + output.getPortName(i));
+}
+
+var deviceNumber = 2;
+output.openPort(deviceNumber);
+console.log('Opened ' + output.getPortName(deviceNumber) +  '. Waiting for playback.');
+
 // Play the sequence
 while (playing) {
     if (playIndex >= events.length) {
@@ -37,6 +50,15 @@ while (playing) {
             console.log(events[playIndex].scan);
 
             // TODO: Parse barcode and send MIDI CC
+            var byte1 = Math.round(scale(input.substr(7, 2), 0, 100, 0, 127));
+            var byte2 = Math.round(scale(input.substr(9, 2), 0, 100, 0, 127));
+            var byte3 = Math.round(scale(input.substr(11, 2), 0, 100, 0, 127));
+            var byte4 = Math.round(scale(input.substr(13, 2), 0, 100, 0, 127));
+
+            output.sendMessage([176, 1, byte1]);
+            output.sendMessage([176, 2, byte2]);
+            output.sendMessage([176, 3, byte3]);
+            output.sendMessage([176, 4, byte4]);
 
             playIndex++;
         }
